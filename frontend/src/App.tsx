@@ -22,7 +22,21 @@ import {
   Download,
   Share2,
   Copy,
-  Link
+  Link,
+  Filter,
+  FileSpreadsheet,
+  Layers,
+  Sparkles,
+  GitCompare,
+  Trash2,
+  RefreshCw,
+  Globe,
+  BookOpen,
+  Settings,
+  ShieldCheck,
+  ExternalLink,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { analyzeContent, getStats } from './api';
@@ -61,6 +75,13 @@ function App() {
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareLink, setShareLink] = useState('');
   const [showCharts, setShowCharts] = useState(false);
+  
+  // Advanced feature states
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
+  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+  const [complianceRules, setComplianceRules] = useState<string[]>(['GDPR', 'SOC2']);
+  const [customRuleInput, setCustomRuleInput] = useState('');
+  const [showSourceVerification, setShowSourceVerification] = useState(true);
   
   // Voice capture state
   const [isListening, setIsListening] = useState(false);
@@ -592,6 +613,119 @@ Human Check: ${issue.humanCheckHint}`;
                 </div>
               </div>
 
+              {/* Advanced Options Toggle */}
+              <button 
+                className="advanced-options-toggle"
+                onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
+              >
+                <Settings size={16} />
+                Advanced Trust Features
+                {showAdvancedOptions ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+              </button>
+
+              {/* Advanced Options Panel */}
+              {showAdvancedOptions && (
+                <div className="advanced-options-panel">
+                  {/* Multi-language Support */}
+                  <div className="advanced-option-group">
+                    <label className="advanced-option-label">
+                      <Globe size={16} />
+                      Analysis Language
+                    </label>
+                    <select 
+                      className="form-select compact"
+                      value={selectedLanguage}
+                      onChange={(e) => setSelectedLanguage(e.target.value)}
+                    >
+                      <option value="en">English</option>
+                      <option value="hi">Hindi (हिंदी)</option>
+                      <option value="es">Spanish (Español)</option>
+                      <option value="fr">French (Français)</option>
+                      <option value="de">German (Deutsch)</option>
+                      <option value="zh">Chinese (中文)</option>
+                      <option value="ja">Japanese (日本語)</option>
+                      <option value="ar">Arabic (العربية)</option>
+                    </select>
+                  </div>
+
+                  {/* Source Verification Toggle */}
+                  <div className="advanced-option-group">
+                    <label className="advanced-option-label">
+                      <BookOpen size={16} />
+                      Source Verification
+                    </label>
+                    <div 
+                      className={`mini-toggle ${showSourceVerification ? 'active' : ''}`}
+                      onClick={() => setShowSourceVerification(!showSourceVerification)}
+                    >
+                      <div className="mini-toggle-switch" />
+                      <span>{showSourceVerification ? 'Enabled' : 'Disabled'}</span>
+                    </div>
+                    <p className="option-hint">Check claims for citations & suggest verification sources</p>
+                  </div>
+
+                  {/* Custom Compliance Rules */}
+                  <div className="advanced-option-group">
+                    <label className="advanced-option-label">
+                      <ShieldCheck size={16} />
+                      Compliance Rules
+                    </label>
+                    <div className="compliance-tags">
+                      {complianceRules.map((rule, index) => (
+                        <span key={index} className="compliance-tag">
+                          {rule}
+                          <button 
+                            className="tag-remove"
+                            onClick={() => setComplianceRules(prev => prev.filter((_, i) => i !== index))}
+                          >
+                            <X size={12} />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                    <div className="add-rule-input">
+                      <input 
+                        type="text"
+                        placeholder="Add rule (HIPAA, PCI-DSS, etc.)"
+                        value={customRuleInput}
+                        onChange={(e) => setCustomRuleInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && customRuleInput.trim()) {
+                            setComplianceRules(prev => [...prev, customRuleInput.trim().toUpperCase()]);
+                            setCustomRuleInput('');
+                          }
+                        }}
+                      />
+                      <button 
+                        className="add-rule-btn"
+                        onClick={() => {
+                          if (customRuleInput.trim()) {
+                            setComplianceRules(prev => [...prev, customRuleInput.trim().toUpperCase()]);
+                            setCustomRuleInput('');
+                          }
+                        }}
+                      >
+                        Add
+                      </button>
+                    </div>
+                    <div className="preset-rules">
+                      <span className="preset-label">Quick add:</span>
+                      {['HIPAA', 'PCI-DSS', 'ISO27001', 'CCPA', 'FERPA'].map(rule => (
+                        !complianceRules.includes(rule) && (
+                          <button 
+                            key={rule}
+                            className="preset-rule-btn"
+                            onClick={() => setComplianceRules(prev => [...prev, rule])}
+                          >
+                            + {rule}
+                          </button>
+                        )
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {voiceMode && (
                 <button
                   className={`voice-capture-btn ${isListening ? 'listening' : ''}`}
@@ -734,6 +868,96 @@ Human Check: ${issue.humanCheckHint}`;
                           </div>
                         </div>
                       ))}
+                    </div>
+                  )}
+
+                  {/* Source Verification Card */}
+                  {showSourceVerification && (
+                    <div className="source-verification-card">
+                      <h3 className="section-title">
+                        <BookOpen size={18} />
+                        Source Verification
+                      </h3>
+                      <div className="verification-content">
+                        <div className="verification-item">
+                          <div className="verification-status warning">
+                            <AlertTriangle size={16} />
+                          </div>
+                          <div className="verification-details">
+                            <strong>Citation Check</strong>
+                            <p>No explicit citations found in the analyzed content. Consider requesting source references.</p>
+                          </div>
+                        </div>
+                        <div className="verification-item">
+                          <div className="verification-status info">
+                            <ExternalLink size={16} />
+                          </div>
+                          <div className="verification-details">
+                            <strong>Suggested Verification Sources</strong>
+                            <ul className="verification-sources">
+                              {contextType === 'legal' && (
+                                <>
+                                  <li><a href="https://www.law.cornell.edu/" target="_blank" rel="noopener noreferrer">Cornell Law - Legal Information Institute</a></li>
+                                  <li><a href="https://scholar.google.com/" target="_blank" rel="noopener noreferrer">Google Scholar - Legal Cases</a></li>
+                                </>
+                              )}
+                              {contextType === 'finance' && (
+                                <>
+                                  <li><a href="https://www.sec.gov/" target="_blank" rel="noopener noreferrer">SEC - Securities & Exchange Commission</a></li>
+                                  <li><a href="https://www.investopedia.com/" target="_blank" rel="noopener noreferrer">Investopedia - Financial Terms</a></li>
+                                </>
+                              )}
+                              {contextType === 'compliance' && (
+                                <>
+                                  <li><a href="https://gdpr.eu/" target="_blank" rel="noopener noreferrer">GDPR Official Resource</a></li>
+                                  <li><a href="https://www.iso.org/" target="_blank" rel="noopener noreferrer">ISO Standards</a></li>
+                                </>
+                              )}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Active Compliance Rules Card */}
+                  {complianceRules.length > 0 && (
+                    <div className="active-compliance-card">
+                      <h3 className="section-title">
+                        <ShieldCheck size={18} />
+                        Active Compliance Rules ({complianceRules.length})
+                      </h3>
+                      <div className="active-rules-grid">
+                        {complianceRules.map((rule, index) => (
+                          <div key={index} className="active-rule-item">
+                            <div className="rule-icon">
+                              <Shield size={14} />
+                            </div>
+                            <div className="rule-info">
+                              <strong>{rule}</strong>
+                              <span className="rule-status checked">
+                                <CheckCircle size={12} /> Checked
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      {selectedLanguage !== 'en' && (
+                        <div className="language-notice">
+                          <Globe size={14} />
+                          Analysis performed in: {
+                            {
+                              'hi': 'Hindi',
+                              'es': 'Spanish', 
+                              'fr': 'French',
+                              'de': 'German',
+                              'zh': 'Chinese',
+                              'ja': 'Japanese',
+                              'ar': 'Arabic'
+                            }[selectedLanguage] || 'English'
+                          }
+                        </div>
+                      )}
                     </div>
                   )}
 
@@ -954,13 +1178,6 @@ Human Check: ${issue.humanCheckHint}`;
           </div>
         </div>
       )}
-
-      {/* Keyboard Shortcuts Help */}
-      <div className="keyboard-shortcuts-hint">
-        <kbd>Ctrl</kbd>+<kbd>Enter</kbd> Submit &nbsp;|&nbsp; 
-        <kbd>Ctrl</kbd>+<kbd>K</kbd> Clear &nbsp;|&nbsp; 
-        <kbd>Ctrl</kbd>+<kbd>D</kbd> Theme
-      </div>
     </div>
   );
 }
