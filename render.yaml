@@ -1,24 +1,13 @@
 services:
-  # Frontend Static Site
-  - type: web
-    name: vericore-ai-frontend
-    env: static
-    rootDir: frontend
-    buildCommand: npm install && npm run build
-    staticPublishPath: ./dist
-    envVars:
-      - key: NODE_VERSION
-        value: 18
-
   # Backend API
   - type: web
     name: vericore-ai-backend
-    env: python
+    runtime: python
     rootDir: backend
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install --upgrade pip && pip install --only-binary :all: -r requirements.txt || pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11
+        value: "3.11"
       - key: GEMINI_API_KEY
         sync: false
