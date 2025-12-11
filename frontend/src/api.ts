@@ -1,6 +1,6 @@
 import { AnalyzeRequest, AnalyzeResponse, DashboardStats } from './types';
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export async function analyzeContent(request: AnalyzeRequest): Promise<AnalyzeResponse> {
   const response = await fetch(`${API_BASE}/analyze`, {
@@ -21,7 +21,7 @@ export async function analyzeContent(request: AnalyzeRequest): Promise<AnalyzeRe
 
 export async function getStats(): Promise<DashboardStats> {
   const response = await fetch(`${API_BASE}/stats`);
-  
+
   if (!response.ok) {
     return {
       checksToday: 0,
