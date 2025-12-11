@@ -1,5 +1,5 @@
 """
-VibeTrust AI Guardian - Backend API
+VeriCore AI - Backend API
 AI Trust & Compliance Checker for High-Stakes GenAI Outputs
 """
 
@@ -14,7 +14,7 @@ from pydantic import BaseModel
 import google.generativeai as genai
 
 app = FastAPI(
-    title="VibeTrust AI Guardian",
+    title="VeriCore AI",
     description="AI Trust & Compliance Checker for High-Stakes GenAI Outputs",
     version="1.0.0"
 )
@@ -52,8 +52,8 @@ class AnalyzeResponse(BaseModel):
     voiceSummary: Optional[str] = None
     timestamp: str
 
-# System prompt for VibeTrust AI Guardian
-SYSTEM_PROMPT = """You are 'VibeTrust AI Guardian', an advanced AI trust and compliance reviewer designed for enterprise use in high-stakes domains like legal, financial, and regulatory compliance.
+# System prompt for VeriCore AI
+SYSTEM_PROMPT = """You are 'VeriCore AI', an advanced AI trust and compliance reviewer designed for enterprise use in high-stakes domains like legal, financial, and regulatory compliance.
 
 INTERNAL PROCESS (Multi-Model Consensus Simulation):
 You internally simulate 3 independent expert models reviewing the given AI-generated answer:
@@ -278,7 +278,7 @@ def generate_demo_analysis(answer_text: str, context_type: str) -> dict:
         compliance_report = f"ALERT: This {ctx_name} content has received a low trust score of {score}/100 from multi-model consensus analysis. Significant concerns have been identified including potential hallucinations, unverifiable claims, and compliance risks. This content should NOT be used without thorough review by qualified professionals. Immediate escalation to legal/compliance team is recommended."
     
     # Generate NDA audit note
-    nda_audit_note = f"VibeTrust AI Guardian analysis completed at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}. Context: {context_type.upper()}. Trust Score: {score}/100 ({label} confidence). {len(issues)} issue(s) flagged for review. {'Demo mode - simulated analysis.' if True else 'Production analysis.'}"
+    nda_audit_note = f"VeriCore AI analysis completed at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}. Context: {context_type.upper()}. Trust Score: {score}/100 ({label} confidence). {len(issues)} issue(s) flagged for review. {'Demo mode - simulated analysis.' if True else 'Production analysis.'}"
     
     return {
         "score": score,
@@ -294,7 +294,7 @@ def root():
     """Health check endpoint"""
     return {
         "status": "online",
-        "service": "VibeTrust AI Guardian",
+        "service": "VeriCore AI",
         "version": "1.0.0",
         "mode": "demo" if not os.getenv("GEMINI_API_KEY") else "production"
     }

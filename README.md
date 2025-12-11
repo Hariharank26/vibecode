@@ -1,4 +1,4 @@
-# 🛡️ VibeTrust AI Guardian
+# 🛡️ VeriCore AI
 
 **AI Trust & Compliance Checker for High-Stakes GenAI Outputs**
 
@@ -19,9 +19,9 @@ Generative AI is transforming enterprises, but outputs from ChatGPT, Claude, and
 
 ---
 
-## 💡 The Solution: VibeTrust AI Guardian
+## 💡 The Solution: VeriCore AI
 
-VibeTrust acts as a **trust layer** between AI outputs and human decision-makers:
+VeriCore acts as a **trust layer** between AI outputs and human decision-makers:
 
 1. **Multi-Model Consensus Simulation** - Simulates 3 independent AI expert reviewers to cross-check claims
 2. **Risk Scoring** - Provides a 0-100 trust score with High/Medium/Low labels
@@ -83,7 +83,7 @@ VibeTrust acts as a **trust layer** between AI outputs and human decision-makers
 
 ```bash
 # Navigate to project
-cd VibeTrustAI
+cd VeriCoreAI
 
 # Backend setup
 cd backend
@@ -142,7 +142,7 @@ Navigate to **http://localhost:5173** in your browser.
 Use this script when presenting to hackathon judges:
 
 ### Opening (15 sec)
-> "Enterprises are adopting GenAI, but AI hallucinations in legal, financial, and compliance contexts can cost millions. VibeTrust AI Guardian is an enterprise trust layer that validates AI outputs before they reach decision-makers."
+> "Enterprises are adopting GenAI, but AI hallucinations in legal, financial, and compliance contexts can cost millions. VeriCore AI is an enterprise trust layer that validates AI outputs before they reach decision-makers."
 
 ### Demo Flow (90 sec)
 
@@ -156,10 +156,10 @@ Use this script when presenting to hackathon judges:
    > "I'll select 'Legal / Contract Review' since this is a contract summary."
 
 4. **Run Trust Check**
-   > "Now I click 'Run Trust Check'. VibeTrust simulates three independent AI reviewers checking for consensus."
+   > "Now I click 'Run Trust Check'. VeriCore simulates three independent AI reviewers checking for consensus."
 
 5. **Show Results**
-   > "We get a Trust Score of [X]. Look at the flagged risks - VibeTrust identified [specific issue] as potentially hallucinated. The compliance report is ready for legal review."
+   > "We get a Trust Score of [X]. Look at the flagged risks - VeriCore identified [specific issue] as potentially hallucinated. The compliance report is ready for legal review."
 
 6. **Copy Report**
    > "One click copies the full audit report for compliance files or NDA documentation."
@@ -168,7 +168,7 @@ Use this script when presenting to hackathon judges:
    > "We also support voice audit mode - ready for hands-free compliance verification."
 
 ### Closing (15 sec)
-> "VibeTrust brings enterprise-grade trust to GenAI. Banks, law firms, and corporates can now validate AI outputs before acting on them. Questions?"
+> "VeriCore brings enterprise-grade trust to GenAI. Banks, law firms, and corporates can now validate AI outputs before acting on them. Questions?"
 
 ---
 
@@ -223,7 +223,7 @@ Analyze AI-generated content for trust and compliance risks.
     }
   ],
   "complianceReport": "The AI-generated content contains several legal references that require verification...",
-  "ndaauditNote": "Content reviewed by VibeTrust AI Guardian on [date]. Flagged 2 potential issues...",
+  "ndaauditNote": "Content reviewed by VeriCore AI on [date]. Flagged 2 potential issues...",
   "voiceSummary": "This legal content has medium trust with two flagged issues...",
   "timestamp": "2024-01-15T10:30:00.000Z"
 }
@@ -242,7 +242,7 @@ Get recent analysis history.
 ## 📁 Project Structure
 
 ```
-VibeTrustAI/
+VeriCoreAI/
 ├── backend/
 │   ├── main.py              # FastAPI application
 │   ├── requirements.txt     # Python dependencies
@@ -293,6 +293,6 @@ MIT License - Built for hackathon demonstration purposes.
 
 ## 👥 Team
 
-**VibeTrust AI Guardian** - Bringing enterprise trust to the AI era.
+**VeriCore AI** - Bringing enterprise trust to the AI era.
 
 *Built with ❤️ for the hackathon*
